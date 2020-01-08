@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.wangh.dao.UserDao">
+
+	<select id="queryUserByTime" resultType="Integer">
+        select count(*) from user where sex = #{sex} and DATE_SUB(NOW(),INTERVAL #{day} day) &lt; rigest_date
+    </select>
+
+    <select id="selectByLocation" resultType="UserDto">
+        select location name,count(*) value from user where sex=#{sex} group by location
+    </select>
+
+    <!--根据phone和密码查询-->
+    <select id="selectByPhone" resultType="user">
+        select id,phone,password,photo,name,nick_name nickName,sex,location,rigest_date rigestDate,last_login lastLogin from user where phone=#{phone}
+    </select>
+
+    <!-- 查看一个用户下的功课 -->
+    <select id="queryCourseByUser" resultType="course">
+        select c.id,c.title from user u join course c on u.id = c.user_id where u.id=#{id}
+    </select>
+
+    <!-- 修改个人信息 -->
+    <update id="updateUser">
+        update user set sex=#{sex},location=#{location},password=#{password} where id=#{id}
+    </update>
+
+    <!-- 通过id查用户 -->
+    <select id="queryById" resultType="user">
+        select id,phone,password,photo,name,nick_name nickName,sex,location,rigest_date rigestDate,last_login lastLogin from user where id=#{id}
+    </select>
+
+    <!-- 查询5个用户不包含自己 -->
+    <select id="queryFiveUser" resultType="user">
+        select id,phone,name,nick_name nickName,sex,location from user where id!=#{id} and status='1' order by rigest_date desc limit 0,5
+    </select>
+
+    <!-- 补充个人信息 -->
+    <update id="replenishUser">
+        update user set password=#{password},name=#{name},nick_name=#{nick_name},sex=#{sex},sign=#{sign},location=#{location} where id=#{id}
+    </update>
+
+    <!-- 注册接口 -->
+    <insert id="registerUser">
+        insert into user (id,phone) values (#{id},#{phone})
+    </insert>
+
+</mapper>

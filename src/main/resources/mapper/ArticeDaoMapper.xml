@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.wangh.dao.ArticleDao">
+
+	<select id="queryOneById" resultType="article">
+        select id,title,img,content,create_date createDate,publish_date publishDate,status,guru_id guruId from article where id=#{id}
+    </select>
+
+</mapper>
